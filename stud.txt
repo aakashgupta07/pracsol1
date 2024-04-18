@@ -1,0 +1,97 @@
+<html>
+<head>
+<script>
+function showadd(str)
+{
+ if(str=="")
+ {
+  document.getElementById("myDiv").innerHTML="";
+  return;
+ }
+ if(window.XMLHttpRequest)
+ {
+  XHRobj= new XMLHttpRequest();
+ }
+ else
+ {
+  XHRobj=new ActiveXObject("Microsoft.XMLHTTP");
+ }
+ XHRobj.onreadystatechange=function()
+ {
+  if(XHRobj.readyState==4 && XHRobj.status==200)
+  {
+   document.getElementById("myDiv").innerHTML=XHRobj.responseText;
+  }
+ }
+ XHRobj.open("GET","student.php?q="+str,true);
+ XHRobj.send();
+}
+</script>
+</head>
+<body>
+<form>
+Enter Student name <input type="text"name="n1" ><br>
+<input type ="button"   value=Details onclick="showadd(form.n1.value)">
+</form>
+<div id="myDiv"></div>
+</body></html>
+
+
+<?php
+ $q=$_GET["q"];
+ mysql_connect("localhost","root","")or die(mysql_error);
+ mysql_select_db("studdb");
+ $sql="select * from student where sname='".$q."'";
+ $result=mysql_query($sql);
+ ?>
+<table border='1'><tr><th>STUDENT ID</th><th>NAME</th><th>MARK</th></tr>
+<?php
+ while($r=mysql_fetch_array($result))
+ {
+  echo "<tr>";
+  echo "<td>".$r['sno']."</td>";
+  echo"<td>".$r['sname']."</td>";
+  echo"<td>".$r['mark']."</td>";
+   echo "</tr>";
+  }
+ ?>
+ </table>
+
+
+
+
+
+
+
+
+ <html>
+<head>
+<script>
+function showadd(n1,n2)
+{
+    if(window.XMLHttpRequest)
+    {
+        XHRobj =new XMLHttpRequest();
+    }
+    else
+    {
+        XHRobj =new ActiveXObject ("Microsoft . XMLHTTP") ;
+    }
+    XHRobj.onreadystatechange=function()
+    {
+        if(XHRobj.readyState==4  &&   XHRobj . status==200)
+        {
+            document.getElementById("myDiv").innerHTML=XHRobj.responseText;
+        }
+    }
+    XHRobj.open("GET","ajaxaddd.php?v1="+n1+" & v2="+n2,true);
+    XHRobj.send();
+}
+</script></head>
+<body><form>
+Enter no1 <input type="text" name="n1"><br>
+Enter no2 <input type="text" name="n2"><br>
+<input type=button value=Addition onclick="showadd(form.n1.value,form.n2.value)">
+</form>
+<div id="myDiv"></div>
+</body></html>
